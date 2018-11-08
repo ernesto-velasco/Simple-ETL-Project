@@ -1,0 +1,30 @@
+body {
+	max-height: 100vh;
+	max-width: 100vw;
+	overflow: hidden;
+	overflow-y: hidden;
+}
+#sidenav {
+	height: 100vh;
+	overflow: scroll;
+	background-color: #eceff1;
+}
+.hidecontent {
+	display: none
+}
+#showOnSubstringReplace {
+	display: none;
+}
+#showOnStringReplace {
+	display: none;
+}
+#showOnStringReplace {
+	display: none;
+}
+.maincontent {
+	height: 100vh;
+	overflow: scroll;
+}
+.white{
+	color: #ffffff;
+}

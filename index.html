@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Ernesto Velasco">
+    <title>ETL</title>
+
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection" />
+    <!--Import Google Icon Font-->
+    <link href="css/icon.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+    <input type="hidden" id="flag" />
+    
+    <div class="row">
+        <!-- navbar -->
+        <div class="col s12 m4 l3" id="sidenav">
+            <!-- form to import csv file -->
+            <div class="row">
+                <form method="get" name="form_filename">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" name="in_filename" accept=".csv">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" id="file_path" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a class="waves-effect waves-light btn" id="load_data">
+                            <i class="material-icons left"></i>
+                            Send
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <!-- /form to import csv file -->
+            <!-- hidden content -->
+            <!-- this content will be shown once a file is selected-->
+            <div id="showOnFileSelect">
+                <!-- column selection-->
+                <div class="row">
+                    <div id="employee_select">
+
+                    </div>
+                </div>
+                <!-- /column selection-->
+
+                <!-- show-hide empty spaces-->
+                <div class="row">
+                    <input name="showspace" type="radio" id="test1" class="disabled" onclick="spacing(document.getElementById('bandera').value,document.getElementById('replaceinput').value)"
+                        disabled="" />
+                    <label for="test1">Show empty spaces</label>
+                    <input name="showspace" type="radio" id="test2" class="disabled" onclick="spacingout(document.getElementById('bandera').value,document.getElementById('replaceinput').value)"
+                        disabled="" checked="" />
+                    <label for="test2">Hide empty spaces</label>
+                </div>
+                <!-- /show-hide empty spaces-->
+
+                <!-- option selection-->
+                <div class="row">
+                    <select class="browser-default dis">
+                        <option value="-1">Choose an option</option>
+                        <option onclick="removeTrailingSpaces(document.getElementById('flag').value)">
+                            Remove trailing spaces
+                        </option>
+                        <option onclick="removeLeadingSpaces(document.getElementById('flag').value)">
+                            Remove leading spaces
+                        </option>
+                        <option onclick="removeSpaces(document.getElementById('flag').value)">
+                            Remove spaces on both sides
+                        </option>
+                        <option onclick="removeDuplicateSpaces(document.getElementById('flag').value)">
+                            Remove duplicate spaces
+                        </option>
+                        <option onclick="uppercase(document.getElementById('flag').value)">
+                            Uppercase
+                        </option>
+                        <option onclick="lowercase(document.getElementById('flag').value)">
+                            Lowercase
+                        </option>
+                        <option onclick="capitalize(document.getElementById('flag').value)">
+                            Capitalize
+                        </option>
+                        <option onclick="titlecase(document.getElementById('flag').value)">
+                            Titlecase
+                        </option>
+                        <option onclick="validateNumbers(document.getElementById('flag').value)">
+                            Validate only numbers
+                        </option>
+                        <option onclick="validateLetters(document.getElementById('flag').value)">
+                            Validate only letters
+                        </option>
+                        <option onclick="show(1)">
+                            Replace Substring
+                        </option>
+                        <option onclick="show(2)">
+                            Replace String
+                        </option>
+                    </select>
+                </div>
+                <!-- /option selection-->
+
+                <!-- replace forms-->
+                <div class="row">
+                    <!-- replace substring-->
+                    <form>
+                        <div class="row" id="showOnSubstringReplace">
+                            <div class="input-field">
+                                <input id="findSubstring" type="text" class="validate disabled" required="" disabled="">
+                                <label for="findSubstring">Find</label>
+                            </div>
+                            <div class="input-field">
+                                <input id="replaceSubstring" type="text" class="validate disabled" required="" disabled="">
+                                <label for="replaceSubstring">Replace</label>
+                            </div>
+                            <div class="input-field">
+                                <a class="waves-effect waves-light btn" onclick="replaceSubstring(document.getElementById('flag').value,document.getElementById('findSubstring').value,document.getElementById('replaceSubstring').value)">
+                                    <i class="material-icons left"></i>
+                                    Replace
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- /Replace Substring-->
+
+                    <!-- Replace String-->
+                    <form>
+                        <div class="row" id="showOnStringReplace">
+                            <div class="input-field">
+                                <input id="findString" type="text" class="validate disabled" required="" disabled="">
+                                <label for="findString">Find</label>
+                            </div>
+                            <div class="input-field">
+                                <input id="replaceString" type="text" class="validate disabled" required="" disabled="">
+                                <label for="replaceString">Replace</label>
+                            </div>
+                            <div class="input-field">
+                                <a class="waves-effect waves-light btn dis" onclick="replaceString(document.getElementById('flag').value,document.getElementById('findString').value,document.getElementById('replaceString').value)">
+                                    <i class="material-icons left"></i>
+                                    Replace
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- /Replace String-->
+                </div>
+                <!-- /replace forms-->
+            </div>
+            <!-- /hidden content -->
+        </div>
+        <!-- /navbar -->
+        <!-- main content-->
+    <div class="col s12 m8 l9 maincontent">
+            <!-- search input-->
+            <div class="row">
+                <form>
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <i class="material-icons prefix">search</i>
+                            <input id="searchTerm" type="text" onkeyup="doSearch()" />
+                            <label for="icon_prefix">Search</label>
+                        </div>
+                </form>
+            </div>
+            <!-- /search input-->
+            <!-- export csv button-->
+            <div class="row">
+                <input type="button" onclick="exportTableToCSV(document.getElementById('file_path').value)" value="Guardar en csv"
+                    disabled="" class="dis" disabled=""><br>
+            </div>
+            <!-- /export csv button-->
+            <div class=row>
+                <div class="input-field">
+                    <div id="employee_table">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /main content-->
+    </div>
+    
+
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
